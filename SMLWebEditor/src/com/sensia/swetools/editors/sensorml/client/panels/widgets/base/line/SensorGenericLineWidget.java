@@ -106,6 +106,8 @@ public class SensorGenericLineWidget extends AbstractSensorElementWidget{
 				String parentName = widget.getParent().getName();
 				if(parentName != null) {
 					labelPanel.add(new HTML(toNiceLabel(widget.getParent().getName())));
+					//get the associated value
+					titleValueWidget = widget.getParent();
 				}
 			}
 		} else if (widget.getType() == TAG_TYPE.ELEMENT && widget.getName().equals("label")) {
@@ -124,10 +126,14 @@ public class SensorGenericLineWidget extends AbstractSensorElementWidget{
 						labelPanel.add(child.getPanel());
 						isLabelProvided=true;
 						hasTitle = true;
+						//get the associated value
+						titleValueWidget = findWidget(child, "value", TAG_DEF.RNG, TAG_TYPE.VALUE);
 						break;
 					} else if((child.getName().equals("name") && !isLabelProvided)) {
 						labelPanel.clear();
 						labelPanel.add(child.getPanel());
+						//get the associated value
+						titleValueWidget = findWidget(child, "value", TAG_DEF.RNG, TAG_TYPE.VALUE);
 						hasTitle = true;
 					}
 				}

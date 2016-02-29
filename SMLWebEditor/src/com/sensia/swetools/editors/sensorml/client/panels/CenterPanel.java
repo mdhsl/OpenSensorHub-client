@@ -10,17 +10,20 @@
 
 package com.sensia.swetools.editors.sensorml.client.panels;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
-import javax.swing.event.ChangeEvent;
+import javax.xml.XMLConstants;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+
+import org.xml.sax.SAXException;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
@@ -31,7 +34,6 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.sensia.swetools.editors.sensorml.client.IParsingObserver;
 import com.sensia.swetools.editors.sensorml.client.RNGProcessorSML;
@@ -65,7 +67,6 @@ public class CenterPanel extends Composite implements IParsingObserver{
 
 		Panel profilePanel = getProfilePanel();
 		Panel viewXmlPanel = getXMLViewPanel();
-		
 
 		//add View as XML button
 		Button viewAsXML = new Button("View as XML");
@@ -174,7 +175,7 @@ public class CenterPanel extends Composite implements IParsingObserver{
 		
 		HTML titleProfile = new HTML("<b>Profiles:</b>");
 		
-		Button load = new Button("Load");
+		Button load = new Button("Apply");
 		edit = new CheckBox("Edit");
 		
 		panel.add(titleProfile);
@@ -196,6 +197,11 @@ public class CenterPanel extends Composite implements IParsingObserver{
 		});
 		
 		load.addClickHandler(new LoadProfileButtonClickListener(profileListBox,profiles, smlEditorProcessor));
+		
+		
+		//disable panel
+		profileListBox.setEnabled(false);
+		load.setEnabled(false);
 		
 		return panel;
 	}

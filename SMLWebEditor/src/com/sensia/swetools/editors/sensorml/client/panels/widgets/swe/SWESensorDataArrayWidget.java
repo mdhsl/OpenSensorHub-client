@@ -203,11 +203,6 @@ public class SWESensorDataArrayWidget extends AbstractSensorElementWidget {
 
 	private HorizontalPanel container;
 	
-	private String values;
-	private String blockSeparator;
-	private String tokenSeparator;
-	private String decimalSeparator;
-	
 	private Panel concatenedAxisNamesPanel;
 	private Panel defPanel;
 	
@@ -259,49 +254,54 @@ public class SWESensorDataArrayWidget extends AbstractSensorElementWidget {
 		}
 	}
 
+	public void refresh() {
+		super.refresh();
+		for(final ISensorWidget child : getElements()) {
+			if(child.getDef() == TAG_DEF.SWE) {
+				String name = child.getName();
+				if(name.equals("elementType")) {
+					buildConcatenedAxisNamesPanel(child);
+				}
+			}
+		}
+	}
+	
 	@Override
 	protected void addSensorWidget(ISensorWidget widget) {
 		if(widget.getDef() == TAG_DEF.SWE) {
 			String name = widget.getName();
-			if(name.equals("encoding")) {
-				//looking for separator
-				//<swe:TextEncoding tokenSeparator="" blockSeparator="" decimalSeparator="" />
-				tokenSeparator = widget.getValue("tokenSeparator");
-				blockSeparator = widget.getValue("blockSeparator");
-				decimalSeparator = widget.getValue("decimalSeparator");
-			} else if(name.equals("values")) {
-				//<swe:values>...</swe:values>
-				values = widget.getValue("values");
-				if(values != null) {
-					values = values.replaceAll("\n", "").replaceAll("\\s+", " ").trim();
-				}
-			} else if(name.equals("elementType")) {
-				//looking for fields
-				List<ISensorWidget> fields = findWidgets(widget, "field", TAG_DEF.SWE, TAG_TYPE.ELEMENT);
-				
-				//<swe:DataRecord> <swe:field name=".."> ... </swe:field> </swe:DataRecord>
-				String concatenedAxisNames = "";
-				for(ISensorWidget field : fields) {
-					//prior label
-					String label = field.getValue("label");
-					if(label == null) {
-						//if no label, takes the attribute name
-						label = toNiceLabel(field.getValue("name"));
-					}
-					concatenedAxisNames +=  label + VS;
-				}
-				
-				//remove extra "vs"
-				if(!concatenedAxisNames.isEmpty()) {
-					concatenedAxisNames = concatenedAxisNames.substring(0, concatenedAxisNames.length()-VS.length());
-				}
-				concatenedAxisNamesPanel.add(new HTML(concatenedAxisNames));
+			if(name.equals("elementType")) {
+				buildConcatenedAxisNamesPanel(widget);
 			}
 		} else if(widget.getType() == TAG_TYPE.ATTRIBUTE && widget.getName().equals("definition")){
 			defPanel.add(widget.getPanel());
 		}
 	}
 
+	private void buildConcatenedAxisNamesPanel(final ISensorWidget widget) {
+		//looking for fields
+		List<ISensorWidget> fields = findWidgets(widget, "field", TAG_DEF.SWE, TAG_TYPE.ELEMENT);
+		
+		//<swe:DataRecord> <swe:field name=".."> ... </swe:field> </swe:DataRecord>
+		String concatenedAxisNames = "";
+		for(ISensorWidget field : fields) {
+			//prior label
+			String label = field.getValue("label");
+			if(label == null) {
+				//if no label, takes the attribute name
+				label = toNiceLabel(field.getValue("name"));
+			}
+			concatenedAxisNames +=  label + VS;
+		}
+		
+		//remove extra "vs"
+		if(!concatenedAxisNames.isEmpty()) {
+			concatenedAxisNames = concatenedAxisNames.substring(0, concatenedAxisNames.length()-VS.length());
+		}
+		concatenedAxisNamesPanel.clear();
+		concatenedAxisNamesPanel.add(new HTML(concatenedAxisNames));
+	}
+	
 	@Override
 	protected AbstractSensorElementWidget newInstance() {
 		return new SWESensorDataArrayWidget();
@@ -316,9 +316,7 @@ public class SWESensorDataArrayWidget extends AbstractSensorElementWidget {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			if(chart == null) {
-				chart = SWESensorDataArrayChartHelper.createChart(SWESensorDataArrayWidget.this, values, tokenSeparator, blockSeparator);
-			}
+			chart = SWESensorDataArrayChartHelper.createChart(SWESensorDataArrayWidget.this);
 			
 			SimplePanel panel = new SimplePanel(chart.getChart());
 			panel.addStyleName("graph-dataarray-panel");
@@ -330,9 +328,7 @@ public class SWESensorDataArrayWidget extends AbstractSensorElementWidget {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			if(chart == null) {
-				chart = SWESensorDataArrayChartHelper.createChart(SWESensorDataArrayWidget.this, values, tokenSeparator, blockSeparator);
-			}
+			chart = SWESensorDataArrayChartHelper.createChart(SWESensorDataArrayWidget.this);
 			SimplePanel panel = new SimplePanel(chart.getTable());
 			panel.addStyleName("table-dataarray-panel");
 			

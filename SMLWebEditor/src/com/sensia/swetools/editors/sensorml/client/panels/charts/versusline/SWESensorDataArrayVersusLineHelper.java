@@ -11,7 +11,16 @@ public class SWESensorDataArrayVersusLineHelper {
 
 	//versus chart builder
 	public static ISensorChart create1LineVersusChart(AbstractSensorElementWidget root,ISensorWidget data1,
-			ISensorWidget data2,String values,String tokenSeparator,String blockSeparator) {
+			ISensorWidget data2) {
+		
+		String values = root.getValue("values");
+		if(values != null) {
+			values = values.replaceAll("\n", "").replaceAll("\\s+", " ").trim();
+		}
+		
+		String tokenSeparator = root.getValue("tokenSeparator");
+		String blockSeparator = root.getValue("blockSeparator");
+		String decimalSeparator = root.getValue("decimalSeparator");
 		
 		//handle data 1
 		ISensorWidget quantity = AbstractSensorElementWidget.findWidget(data1, "Quantity", TAG_DEF.SWE, TAG_TYPE.ELEMENT);
