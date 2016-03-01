@@ -13,12 +13,38 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.sensia.swetools.editors.sensorml.client.listeners.IButtonCallback;
 import com.sensia.swetools.editors.sensorml.client.listeners.ILoadFiledCallback;
 
 public class Utils {
 
 	private Utils(){}
+	
+	public static final DialogBox createCustomDialogBox(final Panel panel,final String title,final Widget... widgets){
+		final DialogBox dialogBox = new DialogBox();
+		dialogBox.setText(title);
+		dialogBox.setGlassEnabled(true);
+		dialogBox.setAnimationEnabled(true);
+		
+		//create Panel
+		Panel main = new VerticalPanel();
+		
+		HorizontalPanel buttonsPanel = new HorizontalPanel();
+		for(Widget widget : widgets) {
+			buttonsPanel.add(widget);
+		}
+		
+		buttonsPanel.setSpacing(5);
+		
+		main.add(panel);
+		main.add(buttonsPanel);
+		
+		dialogBox.add(main);
+		dialogBox.center();
+         
+		return dialogBox;
+	}
 	
 	public static final DialogBox createAddDialogBox(final Panel panel,final String title,final IButtonCallback addCB){
 		final DialogBox dialogBox = new DialogBox();

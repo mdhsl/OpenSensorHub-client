@@ -9,7 +9,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.sensia.swetools.editors.sensorml.client.RNGProcessorSML;
-import com.sensia.swetools.editors.sensorml.client.panels.FileUploadPanel;
+import com.sensia.swetools.editors.sensorml.client.panels.source.FileUploadPanel;
 import com.sensia.swetools.editors.sensorml.client.panels.source.ISourcePanel;
 
 public class LoadProfileButtonClickListener implements ClickHandler{

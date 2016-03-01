@@ -7,7 +7,7 @@
     Mathieu DHAINAUT <mathieu.dhainaut@gmail.com>
  
  ******************************* END LICENSE BLOCK ***************************/
-package com.sensia.swetools.editors.sensorml.client.panels;
+package com.sensia.swetools.editors.sensorml.client.panels.source;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -103,7 +103,7 @@ public class FileUploadPanel {
 			var reader = new FileReader();
 			reader.readAsText(elt.files[0]);
 			reader.onloadend = function(event) {
-				that.@com.sensia.swetools.editors.sensorml.client.panels.FileUploadPanel::setContents(Ljava/lang/String;)(event.target.result);
+				that.@com.sensia.swetools.editors.sensorml.client.panels.source.FileUploadPanel::setContents(Ljava/lang/String;)(event.target.result);
 			};
 		}
 	}-*/;

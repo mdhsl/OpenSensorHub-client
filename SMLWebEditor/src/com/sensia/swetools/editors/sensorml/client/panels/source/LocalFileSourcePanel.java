@@ -4,7 +4,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.sensia.swetools.editors.sensorml.client.RNGProcessorSML;
-import com.sensia.swetools.editors.sensorml.client.panels.FileUploadPanel;
 
 public class LocalFileSourcePanel extends AbstractSourcePanel{
 

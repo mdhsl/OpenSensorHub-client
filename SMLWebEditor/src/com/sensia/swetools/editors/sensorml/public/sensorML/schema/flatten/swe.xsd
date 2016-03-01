@@ -1,0 +1,1466 @@
+<schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+    targetNamespace="http://www.opengis.net/swe/2.0" version="2.0.1"
+    xmlns="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/2.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <annotation>
+        <documentation>All-components schema for the SWE Common Data Model namespace. See
+            Conformance Class urn:ogc:spec:SWECommonDataModel:2.0:XXX of the SWE Common Data Model
+            2.0 specification                  SWE Common is an OGC Standard.         Copyright (c)
+            2010 Open Geospatial Consortium.          To obtain additional rights of use, visit
+            http://www.opengeospatial.org/legal/ .         </documentation>
+    </annotation>
+    <annotation>
+        <documentation>SWE Common Data Model schema for record data components. See requirements
+            class http://www.opengis.net/spec/SWE/2.0/req/xsd-record-components/
+            SWE Common is an OGC Standard.         Copyright (c) 2010 Open Geospatial Consortium.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+        </documentation>
+    </annotation>
+    <annotation>
+        <documentation>SWE Common Data Model schema for simple data components (i.e. without
+            descendants). See requirements class
+            http://www.opengis.net/spec/SWE/2.0/req/xsd-simple-components/                  SWE
+            Common is an OGC Standard.         Copyright (c) 2010 Open Geospatial Consortium.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+        </documentation>
+    </annotation>
+    <annotation>
+        <documentation>Schema of simple basic types used in various places in the SWE Common Data
+            Model.      SWE Common is an OGC Standard.   Copyright (c) 2010 Open Geospatial
+            Consortium.    To obtain additional rights of use, visit
+            http://www.opengeospatial.org/legal/ .   </documentation>
+    </annotation>
+    <import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+    <!-- ================================================= -->
+    <element abstract="true" name="AbstractSWE" type="swe:AbstractSWEType">
+        <annotation>
+            <documentation>Base substitution groups for all SWE Common objects other than value
+                objects</documentation>
+        </annotation>
+    </element>
+    <complexType name="AbstractSWEType">
+        <sequence>
+            <element form="qualified" maxOccurs="unbounded" minOccurs="0" name="extension"
+                type="anyType">
+                <annotation>
+                    <documentation>Extension slot for future extensions to this
+                        standard.</documentation>
+                </annotation>
+            </element>
+        </sequence>
+        <attribute form="unqualified" name="id" type="ID" use="optional"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element abstract="true" name="AbstractSWEIdentifiable" substitutionGroup="swe:AbstractSWE"
+        type="swe:AbstractSWEIdentifiableType">
+        <annotation>
+            <documentation>Base substitution groups for all SWE Common objects with identification
+                metadata</documentation>
+        </annotation>
+    </element>
+    <complexType name="AbstractSWEIdentifiableType">
+        <complexContent>
+            <extension base="swe:AbstractSWEType">
+                <sequence>
+                    <element form="qualified" minOccurs="0" name="identifier" type="anyURI">
+                        <annotation>
+                            <documentation>Unique identifier of the data component. It can be used
+                                to globally identify a particular component of the dataset, a
+                                process input/output or a universal constant</documentation>
+                        </annotation>
+                    </element>
+                    <element form="qualified" minOccurs="0" name="label" type="string">
+                        <annotation>
+                            <documentation>Textual label for the data component . This is often used
+                                for displaying a human readable name for a dataset field or a
+                                process input/output</documentation>
+                        </annotation>
+                    </element>
+                    <element form="qualified" minOccurs="0" name="description" type="string">
+                        <annotation>
+                            <documentation>Textual description (i.e. human readable) of the data
+                                component usually used to clarify its nature</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <!-- ================================================= -->
+    <complexType name="UnitReference">
+        <attribute form="unqualified" name="code" type="swe:UomSymbol" use="optional"/>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <simpleType name="UomSymbol">
+        <annotation>
+            <documentation>This type specifies a character string of length at least one, and
+                restricted such that it must not contain any of the following characters: ":"
+                (colon), " " (space), (newline), (carriage return), (tab). This allows values
+                corresponding to familiar abbreviations, such as "kg", "m/s", etc.  It is also
+                required that the symbol be an identifier for a unit of measure as specified in the
+                "Unified Code of Units of Measure" (UCUM) (http://aurora.regenstrief.org/UCUM). This
+                provides a set of symbols and a grammar for constructing identifiers for units of
+                measure that are unique, and may be easily entered with a keyboard supporting the
+                limited character set known as 7-bit ASCII. ISO 2955 formerly provided a
+                specification with this scope, but was withdrawn in 2001. UCUM largely follows ISO
+                2955 with modifications to remove ambiguities and other problems.</documentation>
+        </annotation>
+        <restriction base="string">
+            <pattern value="[^: \n\r\t]+"/>
+        </restriction>
+    </simpleType>
+    <!-- ================================================= -->
+    <complexType name="NilValue">
+        <simpleContent>
+            <extension base="token">
+                <attribute form="unqualified" name="reason" type="anyURI" use="required"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+    <!-- ================================================= -->
+    <complexType name="EncodedValuesPropertyType">
+        <complexContent>
+            <extension base="anyType">
+                <attributeGroup ref="swe:AssociationAttributeGroup"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <!-- ================================================= -->
+    <simpleType name="TokenPair">
+        <restriction>
+            <simpleType>
+                <list itemType="string"/>
+            </simpleType>
+            <length value="2"/>
+        </restriction>
+    </simpleType>
+    <!-- ================================================= -->
+    <simpleType name="IntegerPair">
+        <restriction>
+            <simpleType>
+                <list itemType="integer"/>
+            </simpleType>
+            <length value="2"/>
+        </restriction>
+    </simpleType>
+    <!-- ================================================= -->
+    <simpleType name="RealPair">
+        <restriction>
+            <simpleType>
+                <list itemType="double"/>
+            </simpleType>
+            <length value="2"/>
+        </restriction>
+    </simpleType>
+    <!-- ================================================= -->
+    <simpleType name="TimePair">
+        <restriction>
+            <simpleType>
+                <list itemType="swe:TimePosition"/>
+            </simpleType>
+            <length value="2"/>
+        </restriction>
+    </simpleType>
+    <!-- ================================================= -->
+    <simpleType name="TimePosition">
+        <union memberTypes="double swe:TimeIso8601"/>
+    </simpleType>
+    <simpleType name="TimeIso8601">
+        <union memberTypes="date time dateTime swe:TimeIndeterminateValue"/>
+    </simpleType>
+    <simpleType name="TimeIndeterminateValue">
+        <annotation>
+            <documentation>"now" indicates that the specified value shall be replaced with the
+                current temporal position whenever the value is accessed.</documentation>
+        </annotation>
+        <restriction base="string">
+            <enumeration value="now"/>
+        </restriction>
+    </simpleType>
+    <!-- ================================================= -->
+    <attributeGroup name="AssociationAttributeGroup">
+        <attributeGroup ref="xlink:simpleAttrs"/>
+    </attributeGroup>
+    <!-- ================================================= -->
+    <complexType name="Reference">
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <!-- ================================================= -->
+    <element name="Count" substitutionGroup="swe:AbstractSimpleComponent" type="swe:CountType">
+        <annotation>
+            <documentation>Scalar component with integer representation used for a discrete counting
+                value</documentation>
+        </annotation>
+    </element>
+    <complexType name="CountType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="constraint"
+                        type="swe:AllowedValuesPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value"
+                        type="integer">
+                        <annotation>
+                            <documentation>Value is optional, to enable structure to act as a schema
+                                for values provided using other encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="CountPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Count"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="CategoryRange" substitutionGroup="swe:AbstractSimpleComponent"
+        type="swe:CategoryRangeType">
+        <annotation>
+            <documentation>Pair of categorical values used to specify a range in an ordinal
+                reference system (specified by the code space)</documentation>
+        </annotation>
+    </element>
+    <complexType name="CategoryRangeType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="codeSpace"
+                        type="swe:Reference">
+                        <annotation>
+                            <documentation>Name of the dictionary defining an ordered set of values
+                                with respect to which the range is expressed (ordinal reference
+                                system)</documentation>
+                        </annotation>
+                    </element>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="constraint"
+                        type="swe:AllowedTokensPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value"
+                        type="swe:TokenPair">
+                        <annotation>
+                            <documentation>Value is a pair of tokens separated by a space (if tokens
+                                contain spaces, they must be espaced by using XML entities). It is
+                                optional, to enable structure to act as a schema for values provided
+                                using other encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="CategoryRangePropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:CategoryRange"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element abstract="true" name="AbstractSimpleComponent"
+        substitutionGroup="swe:AbstractDataComponent" type="swe:AbstractSimpleComponentType"/>
+    <complexType abstract="true" name="AbstractSimpleComponentType">
+        <complexContent>
+            <extension base="swe:AbstractDataComponentType">
+                <sequence>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="0" name="quality"
+                        type="swe:QualityPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="nilValues"
+                        type="swe:NilValuesPropertyType"/>
+                </sequence>
+                <attribute form="unqualified" name="referenceFrame" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Frame of reference (usually temporal or spatial) with respect
+                            to which the value of the component is expressed. A reference frame
+                            anchors a value to a real world datum.</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="axisID" type="string" use="optional">
+                    <annotation>
+                        <documentation>Specifies the reference axis (refer to gml:axisID). The
+                            reference frame URI should also be specified unless it is inherited from
+                            parent Vector</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="AbstractSimpleComponentPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:AbstractSimpleComponent"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="QuantityRange" substitutionGroup="swe:AbstractSimpleComponent"
+        type="swe:QuantityRangeType">
+        <annotation>
+            <documentation>Decimal pair for specifying a quantity range with a unit of
+                measure</documentation>
+        </annotation>
+    </element>
+    <complexType name="QuantityRangeType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" name="uom" type="swe:UnitReference">
+                        <annotation>
+                            <documentation>Unit of measure used to express the value of this data
+                                component</documentation>
+                        </annotation>
+                    </element>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="constraint"
+                        type="swe:AllowedValuesPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value"
+                        type="swe:RealPair">
+                        <annotation>
+                            <documentation>Value is a pair of double numbers separated by a space.
+                                It is optional, to enable structure to act as a schema for values
+                                provided using other encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="QuantityRangePropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:QuantityRange"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="Time" substitutionGroup="swe:AbstractSimpleComponent" type="swe:TimeType">
+        <annotation>
+            <documentation>Scalar component used to represent a time quantity either as ISO 8601
+                (e.g. 2004-04-18T12:03:04.6Z) or as a duration relative to a time of
+                reference</documentation>
+        </annotation>
+    </element>
+    <complexType name="TimeType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" name="uom" type="swe:UnitReference">
+                        <annotation>
+                            <documentation>Temporal unit of measure used to express the value of
+                                this data component</documentation>
+                        </annotation>
+                    </element>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="constraint"
+                        type="swe:AllowedTimesPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value"
+                        type="swe:TimePosition">
+                        <annotation>
+                            <documentation>Value is optional, to enable structure to act as a schema
+                                for values provided using other encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+                <attribute form="unqualified" name="referenceTime" type="dateTime" use="optional">
+                    <annotation>
+                        <documentation>Specifies the origin of the temporal reference frame as an
+                            ISO8601 date (used to specify time after an epoch that is to say in a
+                            custom frame)</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="localFrame" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Temporal frame of reference whose origin is located by the
+                            value of this component</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="TimePropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Time"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="TimeRange" substitutionGroup="swe:AbstractSimpleComponent"
+        type="swe:TimeRangeType">
+        <annotation>
+            <documentation>Time value pair for specifying a time range (can be a decimal or ISO
+                8601)</documentation>
+        </annotation>
+    </element>
+    <complexType name="TimeRangeType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" name="uom" type="swe:UnitReference">
+                        <annotation>
+                            <documentation>Temporal unit of measure used to express the value of
+                                this data component</documentation>
+                        </annotation>
+                    </element>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="constraint"
+                        type="swe:AllowedTimesPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value"
+                        type="swe:TimePair">
+                        <annotation>
+                            <documentation>Value is a pair of time values expressed in ISO-8601 or
+                                as decimal numbers separated by a space. It is optional, to enable
+                                structure to act as a schema for values provided using other
+                                encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+                <attribute form="unqualified" name="referenceTime" type="dateTime" use="optional">
+                    <annotation>
+                        <documentation>Specifies the origin of the temporal reference frame as an
+                            ISO8601 date (used to specify time after an epoch that is to say in a
+                            custom frame)</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="localFrame" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Temporal frame of reference whose origin is located by the
+                            value of this component</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="TimeRangePropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:TimeRange"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="Boolean" substitutionGroup="swe:AbstractSimpleComponent" type="swe:BooleanType">
+        <annotation>
+            <documentation>Scalar component used to express truth: True or False, 0 or
+                1</documentation>
+        </annotation>
+    </element>
+    <complexType name="BooleanType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value"
+                        type="boolean">
+                        <annotation>
+                            <documentation>Value is optional, to enable structure to act as a schema
+                                for values provided using other encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="BooleanPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Boolean"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="Text" substitutionGroup="swe:AbstractSimpleComponent" type="swe:TextType">
+        <annotation>
+            <documentation>Free text component used to store comments or any other type of textual
+                statement</documentation>
+        </annotation>
+    </element>
+    <complexType name="TextType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="constraint"
+                        type="swe:AllowedTokensPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value" type="string">
+                        <annotation>
+                            <documentation>Value is optional, to enable structure to act as a schema
+                                for values provided using other encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="TextPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Text"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="Category" substitutionGroup="swe:AbstractSimpleComponent" type="swe:CategoryType">
+        <annotation>
+            <documentation>Scalar component used to represent a categorical value as a simple token
+                identifying a term in a code space</documentation>
+        </annotation>
+    </element>
+    <complexType name="CategoryType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="codeSpace"
+                        type="swe:Reference">
+                        <annotation>
+                            <documentation>Name of the dictionary where the possible values for this
+                                component are listed and defined</documentation>
+                        </annotation>
+                    </element>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="constraint"
+                        type="swe:AllowedTokensPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value" type="string">
+                        <annotation>
+                            <documentation>Value is optional, to enable structure to act as a schema
+                                for values provided using other encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="CategoryPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Category"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="Quantity" substitutionGroup="swe:AbstractSimpleComponent" type="swe:QuantityType">
+        <annotation>
+            <documentation>Scalar component with decimal representation and a unit of measure used
+                to store value of a continuous quantity</documentation>
+        </annotation>
+    </element>
+    <complexType name="QuantityType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" name="uom" type="swe:UnitReference">
+                        <annotation>
+                            <documentation>Unit of measure used to express the value of this data
+                                component</documentation>
+                        </annotation>
+                    </element>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="constraint"
+                        type="swe:AllowedValuesPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value" type="double">
+                        <annotation>
+                            <documentation>Value is optional, to enable structure to act as a schema
+                                for values provided using other encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="QuantityPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Quantity"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element abstract="true" name="AbstractDataComponent"
+        substitutionGroup="swe:AbstractSWEIdentifiable" type="swe:AbstractDataComponentType">
+        <annotation>
+            <documentation>Abstract base class for all data components</documentation>
+        </annotation>
+    </element>
+    <complexType abstract="true" name="AbstractDataComponentType">
+        <complexContent>
+            <extension base="swe:AbstractSWEIdentifiableType">
+                <attribute form="unqualified" name="updatable" type="boolean" use="optional">
+                    <annotation>
+                        <documentation>Specifies if the value of a data component can be updated
+                            externally (i.e. is variable)</documentation>
+                    </annotation>
+                </attribute>
+                <attribute default="false" form="unqualified" name="optional" type="boolean"
+                    use="optional">
+                    <annotation>
+                        <documentation>Specifies that data for this component can be omitted in the
+                            datastream</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="definition" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Reference to semantic information defining the precise nature
+                            of the component</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="AbstractDataComponentPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:AbstractDataComponent"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="CountRange" substitutionGroup="swe:AbstractSimpleComponent"
+        type="swe:CountRangeType">
+        <annotation>
+            <documentation>Integer pair used for specifying a count range</documentation>
+        </annotation>
+    </element>
+    <complexType name="CountRangeType">
+        <complexContent>
+            <extension base="swe:AbstractSimpleComponentType">
+                <sequence>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="constraint"
+                        type="swe:AllowedValuesPropertyType"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="value"
+                        type="swe:IntegerPair">
+                        <annotation>
+                            <documentation>Value is a pair of integer numbers separated by a space.
+                                It is optional, to enable structure to act as a schema for values
+                                provided using other encodings</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="CountRangePropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:CountRange"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="NilValues" substitutionGroup="swe:AbstractSWE" type="swe:NilValuesType"/>
+    <complexType name="NilValuesType">
+        <complexContent>
+            <extension base="swe:AbstractSWEType">
+                <sequence>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="1" name="nilValue"
+                        type="swe:NilValue"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="NilValuesPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:NilValues"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="AllowedTokens" substitutionGroup="swe:AbstractSWE" type="swe:AllowedTokensType">
+        <annotation>
+            <documentation>Defines permitted values for the component, as an enumerated list of
+                tokens or a regular expression pattern</documentation>
+        </annotation>
+    </element>
+    <complexType name="AllowedTokensType">
+        <complexContent>
+            <extension base="swe:AbstractSWEType">
+                <sequence>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="0" name="value"
+                        type="string"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="pattern"
+                        type="string"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="AllowedTokensPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:AllowedTokens"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="AllowedTokensPropertyByValueType">
+        <sequence>
+            <element ref="swe:AllowedTokens"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="AllowedValues" substitutionGroup="swe:AbstractSWE" type="swe:AllowedValuesType">
+        <annotation>
+            <documentation>Defines the permitted values for the component as an enumerated list
+                and/or a list of inclusive ranges</documentation>
+        </annotation>
+    </element>
+    <complexType name="AllowedValuesType">
+        <complexContent>
+            <extension base="swe:AbstractSWEType">
+                <sequence>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="0" name="value"
+                        type="double"/>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="0" name="interval"
+                        type="swe:RealPair"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="significantFigures"
+                        type="integer"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="AllowedValuesPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:AllowedValues"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="AllowedValuesPropertyByValueType">
+        <sequence>
+            <element ref="swe:AllowedValues"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="AllowedTimes" substitutionGroup="swe:AbstractSWE" type="swe:AllowedTimesType">
+        <annotation>
+            <documentation>Defines the permitted values for the component, as a time range or an
+                enumerated list of time values</documentation>
+        </annotation>
+    </element>
+    <complexType name="AllowedTimesType">
+        <complexContent>
+            <extension base="swe:AbstractSWEType">
+                <sequence>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="0" name="value"
+                        type="swe:TimePosition"/>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="0" name="interval"
+                        type="swe:TimePair"/>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="significantFigures"
+                        type="integer"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="AllowedTimesPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:AllowedTimes"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="AllowedTimesPropertyByValueType">
+        <sequence>
+            <element ref="swe:AllowedTimes"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <group name="Quality">
+        <annotation>
+            <documentation>Provides an indication of the reliability of the parent component value
+                in the form of a decimal number (ex: relative accuracy), a range (ex: bidirectional
+                tolerance), a categorical value (ex: good, bad) or plain textual
+                statement</documentation>
+        </annotation>
+        <choice>
+            <element ref="swe:Quantity"/>
+            <element ref="swe:QuantityRange"/>
+            <element ref="swe:Category"/>
+            <element ref="swe:Text"/>
+        </choice>
+    </group>
+    <complexType name="QualityPropertyType">
+        <sequence minOccurs="0">
+            <group ref="swe:Quality"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <group name="AnyRange">
+        <annotation>
+            <documentation>Re-usable group providing a choice of range data
+                components</documentation>
+        </annotation>
+        <choice>
+            <element ref="swe:QuantityRange"/>
+            <element ref="swe:TimeRange"/>
+            <element ref="swe:CountRange"/>
+            <element ref="swe:CategoryRange"/>
+        </choice>
+    </group>
+    <complexType name="AnyRangePropertyType">
+        <sequence minOccurs="0">
+            <group ref="swe:AnyRange"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <group name="AnyNumerical">
+        <annotation>
+            <documentation>Re-usable group providing a choice of numeric data
+                components</documentation>
+        </annotation>
+        <choice>
+            <element ref="swe:Count"/>
+            <element ref="swe:Quantity"/>
+            <element ref="swe:Time"/>
+        </choice>
+    </group>
+    <complexType name="AnyNumericalPropertyType">
+        <sequence minOccurs="0">
+            <group ref="swe:AnyNumerical"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <group name="AnyScalar">
+        <annotation>
+            <documentation>Re-usable group providing a choice of scalar data
+                components</documentation>
+        </annotation>
+        <choice>
+            <element ref="swe:Boolean"/>
+            <element ref="swe:Count"/>
+            <element ref="swe:Quantity"/>
+            <element ref="swe:Time"/>
+            <element ref="swe:Category"/>
+            <element ref="swe:Text"/>
+        </choice>
+    </group>
+    <complexType name="AnyScalarPropertyType">
+        <sequence minOccurs="0">
+            <group ref="swe:AnyScalar"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="DataRecord" substitutionGroup="swe:AbstractDataComponent"
+        type="swe:DataRecordType">
+        <annotation>
+            <documentation>Implementation of ISO-11404 Record datatype. This allows grouping
+                (sequence) of data components which can themselves be simple types, records, arrays
+                or choices</documentation>
+        </annotation>
+    </element>
+    <complexType name="DataRecordType">
+        <complexContent>
+            <extension base="swe:AbstractDataComponentType">
+                <sequence>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="1" name="field">
+                        <annotation>
+                            <documentation>Definition of the field provided as a nested data
+                                component. The field can be scalar or can itself be an aggregate
+                                such as a record, choice or array</documentation>
+                        </annotation>
+                        <complexType>
+                            <complexContent>
+                                <extension base="swe:AbstractDataComponentPropertyType">
+                                    <attribute form="unqualified" name="name" type="NCName"
+                                        use="required"/>
+                                </extension>
+                            </complexContent>
+                        </complexType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="DataRecordPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:DataRecord"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="DataRecordPropertyByValueType">
+        <sequence>
+            <element ref="swe:DataRecord"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="Vector" substitutionGroup="swe:AbstractDataComponent" type="swe:VectorType">
+        <annotation>
+            <documentation>Implementation of a mathematical vector composed of a list of scalar
+                coordinates expressed in the mandatory reference frame.</documentation>
+        </annotation>
+    </element>
+    <complexType name="VectorType">
+        <complexContent>
+            <extension base="swe:AbstractDataComponentType">
+                <sequence>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="1" name="coordinate">
+                        <annotation>
+                            <documentation>Definition of the coordinate provided as a data component
+                                with a numerical representation</documentation>
+                        </annotation>
+                        <complexType>
+                            <complexContent>
+                                <extension base="swe:AnyNumericalPropertyType">
+                                    <attribute form="unqualified" name="name" type="NCName"
+                                        use="required"/>
+                                </extension>
+                            </complexContent>
+                        </complexType>
+                    </element>
+                </sequence>
+                <attribute form="unqualified" name="referenceFrame" type="anyURI" use="required">
+                    <annotation>
+                        <documentation>Frame of reference (usually spatial) with respect to which
+                            the coordinates of this vector are expressed. A reference frame anchors
+                            a vector value to a real world datum.</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="localFrame" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Frame of reference whose origin is located by the coordinates
+                            of this vector</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="VectorPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Vector"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="VectorPropertyByValueType">
+        <sequence>
+            <element ref="swe:Vector"/>
+        </sequence>
+    </complexType>
+    <annotation>
+        <documentation>SWE Common Data Model schema for data arrays and data stream descriptors. See
+            requirements class http://www.opengis.net/spec/SWE/2.0/req/xsd-block-components/
+            SWE Common is an OGC Standard.         Copyright (c) 2010 Open Geospatial Consortium.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+        </documentation>
+    </annotation>
+    <annotation>
+        <documentation>SWE Common Data Model schema for specifying parameters of simple encoding
+            methods (Text, XML). See requirements class
+            http://www.opengis.net/spec/SWE/2.0/req/xsd-simple-encodings/                  SWE
+            Common is an OGC Standard.         Copyright (c) 2010 Open Geospatial Consortium.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+        </documentation>
+    </annotation>
+    <!-- ================================================= -->
+    <element abstract="true" name="AbstractEncoding" substitutionGroup="swe:AbstractSWE"
+        type="swe:AbstractEncodingType"/>
+    <complexType abstract="true" name="AbstractEncodingType">
+        <complexContent>
+            <extension base="swe:AbstractSWEType"/>
+        </complexContent>
+    </complexType>
+    <complexType name="AbstractEncodingPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:AbstractEncoding"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType abstract="true" name="AbstractEncodingPropertyByValueType">
+        <sequence>
+            <element ref="swe:AbstractEncoding"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="XMLEncoding" substitutionGroup="swe:AbstractEncoding" type="swe:XMLEncodingType">
+        <annotation>
+            <documentation>Parameters of the XML encoding method</documentation>
+        </annotation>
+    </element>
+    <complexType name="XMLEncodingType">
+        <complexContent>
+            <extension base="swe:AbstractEncodingType"/>
+        </complexContent>
+    </complexType>
+    <complexType name="XMLEncodingPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:XMLEncoding"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="XMLEncodingPropertyByValueType">
+        <sequence>
+            <element ref="swe:XMLEncoding"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="TextEncoding" substitutionGroup="swe:AbstractEncoding"
+        type="swe:TextEncodingType">
+        <annotation>
+            <documentation>Parameters of the text encoding method</documentation>
+        </annotation>
+    </element>
+    <complexType name="TextEncodingType">
+        <complexContent>
+            <extension base="swe:AbstractEncodingType">
+                <attribute default="true" form="unqualified" name="collapseWhiteSpaces"
+                    type="boolean" use="optional">
+                    <annotation>
+                        <documentation>Indicates whether white spaces (i.e. space, tab, CR, LF)
+                            should be collapsed with separators when parsing the data
+                            stream</documentation>
+                    </annotation>
+                </attribute>
+                <attribute default="." form="unqualified" name="decimalSeparator" type="string"
+                    use="optional">
+                    <annotation>
+                        <documentation>Character used as the decimal separator</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="tokenSeparator" type="string" use="required">
+                    <annotation>
+                        <documentation>Character sequence used as the token separator (i.e. between
+                            two successive values)</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="blockSeparator" type="string" use="required">
+                    <annotation>
+                        <documentation>Character sequence used as the block separator (i.e. between
+                            two successive blocks in the data set. The end of a block is reached
+                            once all values from the data tree have been encoded
+                            once)</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="TextEncodingPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:TextEncoding"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="TextEncodingPropertyByValueType">
+        <sequence>
+            <element ref="swe:TextEncoding"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="DataArray" substitutionGroup="swe:AbstractDataComponent" type="swe:DataArrayType">
+        <annotation>
+            <documentation>Implementation of ISO-11404 Array datatype. This defines an array of
+                identical data components with a elementCount. Values are given as a block and can
+                be encoded in different ways</documentation>
+        </annotation>
+    </element>
+    <complexType name="DataArrayType">
+        <complexContent>
+            <extension base="swe:AbstractDataComponentType">
+                <sequence>
+                    <element form="qualified" name="elementCount" type="swe:CountPropertyType">
+                        <annotation>
+                            <documentation>Specifies the size of the array (i.e. the number of
+                                elements of the defined type it contains)</documentation>
+                        </annotation>
+                    </element>
+                    <element form="qualified" name="elementType">
+                        <annotation>
+                            <documentation>Defines the structure of the element that will be
+                                repeated in the array</documentation>
+                        </annotation>
+                        <complexType>
+                            <complexContent>
+                                <extension base="swe:AbstractDataComponentPropertyType">
+                                    <attribute form="unqualified" name="name" type="NCName"
+                                        use="required"/>
+                                </extension>
+                            </complexContent>
+                        </complexType>
+                    </element>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="encoding">
+                        <annotation>
+                            <documentation>Specifies the type of method used to encode the array
+                                values</documentation>
+                        </annotation>
+                        <complexType>
+                            <sequence>
+                                <element ref="swe:AbstractEncoding"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="values"
+                        type="swe:EncodedValuesPropertyType">
+                        <annotation>
+                            <documentation>If present, contains an encoded block of the values
+                                contained in the array. Values are optional so that the array
+                                definition can be used a as a schema for values provided
+                                externally</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="DataArrayPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:DataArray"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="DataArrayPropertyByValueType">
+        <sequence>
+            <element ref="swe:DataArray"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="Matrix" substitutionGroup="swe:DataArray" type="swe:MatrixType">
+        <annotation>
+            <documentation>Implementation of ISO-11404 Array datatype. This defines an array of
+                identical data components with a elementCount. Values are given as a block and can
+                be encoded in different ways</documentation>
+        </annotation>
+    </element>
+    <complexType name="MatrixType">
+        <complexContent>
+            <extension base="swe:DataArrayType">
+                <attribute form="unqualified" name="referenceFrame" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Frame of reference (usually spatial) with respect to which
+                            the coordinates of this matrix are expressed</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="localFrame" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Frame of reference whose origin is located by the
+                            transformation defined by this matrix</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="MatrixPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Matrix"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="MatrixPropertyByValueType">
+        <sequence>
+            <element ref="swe:Matrix"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="DataStream" substitutionGroup="swe:AbstractSWEIdentifiable"
+        type="swe:DataStreamType">
+        <annotation>
+            <documentation>Defines the structure of the element that will be repeated in the
+                stream</documentation>
+        </annotation>
+    </element>
+    <complexType name="DataStreamType">
+        <complexContent>
+            <extension base="swe:AbstractSWEIdentifiableType">
+                <sequence>
+                    <element form="qualified" maxOccurs="1" minOccurs="0" name="elementCount">
+                        <annotation>
+                            <documentation>Number of elements of the defined type that the stream
+                                contains</documentation>
+                        </annotation>
+                        <complexType>
+                            <sequence>
+                                <element ref="swe:Count"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                    <element form="qualified" name="elementType">
+                        <annotation>
+                            <documentation>Definition and structure of one stream
+                                element</documentation>
+                        </annotation>
+                        <complexType>
+                            <complexContent>
+                                <extension base="swe:AbstractDataComponentPropertyType">
+                                    <attribute form="unqualified" name="name" type="NCName"
+                                        use="required"/>
+                                </extension>
+                            </complexContent>
+                        </complexType>
+                    </element>
+                    <element form="qualified" name="encoding">
+                        <annotation>
+                            <documentation>Method used to encode the stream values</documentation>
+                        </annotation>
+                        <complexType>
+                            <sequence>
+                                <element ref="swe:AbstractEncoding"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                    <element form="qualified" name="values" type="swe:EncodedValuesPropertyType">
+                        <annotation>
+                            <documentation>Encoded values for the stream (can be out of
+                                band)</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="DataStreamPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:DataStream"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="DataStreamPropertyByValueType">
+        <sequence>
+            <element ref="swe:DataStream"/>
+        </sequence>
+    </complexType>
+    <annotation>
+        <documentation>SWE Common Data Model schema for specifying parameters of advanced encoding
+            methods (Raw Binary, Base64 Binary, Compressed Binary). See requirements class
+            http://www.opengis.net/spec/SWE/2.0/req/xsd-advanced-encodings/                  SWE
+            Common is an OGC Standard.         Copyright (c) 2010 Open Geospatial Consortium.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+        </documentation>
+    </annotation>
+    <!-- ================================================= -->
+    <element name="Block" substitutionGroup="swe:AbstractSWE" type="swe:BlockType">
+        <annotation>
+            <documentation>Binary encoding parameters used to encode a block of values at once. This
+                is used for encrypting or compressing a complete array of values for
+                instance</documentation>
+        </annotation>
+    </element>
+    <complexType name="BlockType">
+        <complexContent>
+            <extension base="swe:AbstractSWEType">
+                <attribute form="unqualified" name="compression" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Name of the compression method used to encrypt the block of
+                            values described by the referenced data component</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="encryption" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Name of the encryption method used to encrypt the block of
+                            values described by the referenced data component</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="paddingBytes-after" type="integer"
+                    use="optional">
+                    <annotation>
+                        <documentation>Number of padding bytes present in the stream after this
+                            binary block</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="paddingBytes-before" type="integer"
+                    use="optional">
+                    <annotation>
+                        <documentation>Number of padding bytes present in the stream before this
+                            binary block</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="byteLength" type="integer" use="optional">
+                    <annotation>
+                        <documentation>Length in byte of this binary block (if known in
+                            advance)</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="ref" type="string" use="required">
+                    <annotation>
+                        <documentation>Reference to the aggregate data component that this binary
+                            block encoding settings apply to</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="BlockPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Block"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="BlockPropertyByValueType">
+        <sequence>
+            <element ref="swe:Block"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="BinaryEncoding" substitutionGroup="swe:AbstractEncoding"
+        type="swe:BinaryEncodingType">
+        <annotation>
+            <documentation>Parameters of the binary encoding method</documentation>
+        </annotation>
+    </element>
+    <complexType name="BinaryEncodingType">
+        <complexContent>
+            <extension base="swe:AbstractEncodingType">
+                <sequence>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="1" name="member">
+                        <annotation>
+                            <documentation>Each member contains detailed parameters for encoding a
+                                scalar value or a block of values</documentation>
+                        </annotation>
+                        <complexType>
+                            <sequence>
+                                <group ref="swe:ComponentOrBlock"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                </sequence>
+                <attribute form="unqualified" name="byteOrder" type="swe:ByteOrderType"
+                    use="required">
+                    <annotation>
+                        <documentation>Byte order convention used to encode this binary data (big
+                            endian = most significant byte first, MSB or little endian = least
+                            significant byte first, LSB)</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="byteEncoding" type="swe:ByteEncodingType"
+                    use="required">
+                    <annotation>
+                        <documentation>Byte encoding method used to encode the binary data (raw or
+                            base 64)</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="byteLength" type="integer" use="optional">
+                    <annotation>
+                        <documentation>Total length in bytes of the binary stream (if known in
+                            advance)</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="BinaryEncodingPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:BinaryEncoding"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="BinaryEncodingPropertyByValueType">
+        <sequence>
+            <element ref="swe:BinaryEncoding"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <element name="Component" substitutionGroup="swe:AbstractSWE" type="swe:ComponentType">
+        <annotation>
+            <documentation>Binary encoding parameters used for encoding a single data
+                component</documentation>
+        </annotation>
+    </element>
+    <complexType name="ComponentType">
+        <complexContent>
+            <extension base="swe:AbstractSWEType">
+                <attribute form="unqualified" name="encryption" type="anyURI" use="optional">
+                    <annotation>
+                        <documentation>Name of the encryption method used to encrypt the value of
+                            this field</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="significantBits" type="integer" use="optional">
+                    <annotation>
+                        <documentation>Number of significant bits actually used for a binary encoded
+                            numerical value (all remaining bits shall be set to 0)</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="bitLength" type="integer" use="optional"/>
+                <attribute form="unqualified" name="byteLength" type="integer" use="optional">
+                    <annotation>
+                        <documentation>Byte length of this field when a custom data type is
+                            used</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="dataType" type="anyURI" use="required">
+                    <annotation>
+                        <documentation>Binary data type used to encode the value(s) of the
+                            referenced data component</documentation>
+                    </annotation>
+                </attribute>
+                <attribute form="unqualified" name="ref" type="string" use="required">
+                    <annotation>
+                        <documentation>Reference to the data component that these binary encoding
+                            settings apply to</documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="ComponentPropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:Component"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="ComponentPropertyByValueType">
+        <sequence>
+            <element ref="swe:Component"/>
+        </sequence>
+    </complexType>
+    <!-- ================================================= -->
+    <group name="ComponentOrBlock">
+        <choice>
+            <element ref="swe:Component"/>
+            <element ref="swe:Block"/>
+        </choice>
+    </group>
+    <complexType name="ComponentOrBlockPropertyType">
+        <sequence minOccurs="0">
+            <group ref="swe:ComponentOrBlock"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <simpleType name="ByteEncodingType">
+        <restriction base="string">
+            <enumeration value="base64"/>
+            <enumeration value="raw"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="ByteOrderType">
+        <restriction base="string">
+            <enumeration value="bigEndian"/>
+            <enumeration value="littleEndian"/>
+        </restriction>
+    </simpleType>
+    <annotation>
+        <documentation>SWE Common Data Model schema for choice data components (i.e. disjoint
+            unions). See requirements class
+            http://www.opengis.net/spec/SWE/2.0/req/xsd-choice-components/                  SWE
+            Common is an OGC Standard.         Copyright (c) 2010 Open Geospatial Consortium.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+        </documentation>
+    </annotation>
+    <!-- ================================================= -->
+    <element name="DataChoice" substitutionGroup="swe:AbstractDataComponent"
+        type="swe:DataChoiceType">
+        <annotation>
+            <documentation>Implementation of a choice of two or more Data Components (also called
+                disjoint union)</documentation>
+        </annotation>
+    </element>
+    <complexType name="DataChoiceType">
+        <complexContent>
+            <extension base="swe:AbstractDataComponentType">
+                <sequence>
+                    <element form="qualified" minOccurs="0" name="choiceValue">
+                        <annotation>
+                            <documentation>This category component marks the data stream element
+                                that will indicate the actual choice made. Possible choices are
+                                listed in the Category constraint section as an enumeration and
+                                should map to item names.</documentation>
+                        </annotation>
+                        <complexType>
+                            <sequence>
+                                <element ref="swe:Category"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                    <element form="qualified" maxOccurs="unbounded" minOccurs="2" name="item">
+                        <complexType>
+                            <complexContent>
+                                <extension base="swe:AbstractDataComponentPropertyType">
+                                    <attribute form="unqualified" name="name" type="NCName"
+                                        use="required"/>
+                                </extension>
+                            </complexContent>
+                        </complexType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="DataChoicePropertyType">
+        <sequence minOccurs="0">
+            <element ref="swe:DataChoice"/>
+        </sequence>
+        <attributeGroup ref="swe:AssociationAttributeGroup"/>
+    </complexType>
+    <complexType name="DataChoicePropertyByValueType">
+        <sequence>
+            <element ref="swe:DataChoice"/>
+        </sequence>
+    </complexType>
+</schema>
