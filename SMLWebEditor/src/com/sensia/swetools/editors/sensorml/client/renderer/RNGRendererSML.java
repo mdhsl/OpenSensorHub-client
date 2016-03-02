@@ -73,6 +73,7 @@ public class RNGRendererSML extends RNGRendererSWE implements RNGTagVisitor {
 	public RNGRendererSML() {
 		//render section names
 		renderSectionsList.put("identification","Identification");
+		renderSectionsList.put("typeOf","Link to Base");
 		renderSectionsList.put("characteristics","Characteristics");
 		renderSectionsList.put("capabilities","Capabilities");
 		renderSectionsList.put("outputs", "Outputs");

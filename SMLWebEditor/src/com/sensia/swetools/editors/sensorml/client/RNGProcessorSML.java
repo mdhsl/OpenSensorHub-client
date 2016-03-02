@@ -9,12 +9,15 @@ import com.sensia.gwt.relaxNG.RNGParserCallback;
 import com.sensia.gwt.relaxNG.RNGWriter;
 import com.sensia.gwt.relaxNG.XMLSensorMLParser;
 import com.sensia.relaxNG.RNGGrammar;
+import com.sensia.swetools.editors.sensorml.client.panels.widgets.ISensorWidget;
+import com.sensia.swetools.editors.sensorml.client.panels.widgets.ISensorWidget.MODE;
 import com.sensia.swetools.editors.sensorml.client.renderer.RNGRendererSML;
 
 public class RNGProcessorSML {
 
 	private List<IParsingObserver> observers;
 	private RNGGrammar loadedGrammar;
+	private MODE mode = MODE.VIEW;
 	
 	public RNGProcessorSML(){
 		this.observers = new ArrayList<IParsingObserver>();
@@ -55,13 +58,16 @@ public class RNGProcessorSML {
 	}
 	
 	private void parseRNG(final RNGGrammar grammar) {
-		RNGWriter rngWriter = new RNGWriter();
-		Document doc = rngWriter.writeSchema(grammar, true);
 		setLoadedGrammar(grammar);
 		RNGRendererSML renderer = new RNGRendererSML();
 		renderer.visit(grammar);
+		ISensorWidget root = renderer.getRoot();
 		for(final IParsingObserver observer : observers) {
-			observer.parseDone(renderer.getRoot());
+			observer.parseDone(root);
+		}
+		
+		if(mode == MODE.EDIT) {
+			root.switchMode(MODE.EDIT);
 		}
 	}
 	
@@ -71,5 +77,13 @@ public class RNGProcessorSML {
 
 	public void setLoadedGrammar(RNGGrammar loadedGrammar) {
 		this.loadedGrammar = loadedGrammar;
+	}
+
+	public MODE getMode() {
+		return mode;
+	}
+
+	public void setMode(MODE mode) {
+		this.mode = mode;
 	}
 }

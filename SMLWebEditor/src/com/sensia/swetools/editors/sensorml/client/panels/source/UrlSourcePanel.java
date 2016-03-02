@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.sensia.swetools.editors.sensorml.client.RNGProcessorSML;
+import com.sensia.swetools.editors.sensorml.client.panels.widgets.ISensorWidget.MODE;
 
 /**
  * The Class UrlSourcePanel.
@@ -40,6 +41,7 @@ public class UrlSourcePanel extends AbstractSourcePanel {
 
 	@Override
 	public void parseContent() {
+		smlEditorProcessor.setMode(MODE.VIEW);
 		smlEditorProcessor.parse(urlBox.getText());
 	}
 }

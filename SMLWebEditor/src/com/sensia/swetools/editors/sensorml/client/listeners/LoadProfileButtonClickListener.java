@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.sensia.swetools.editors.sensorml.client.RNGProcessorSML;
 import com.sensia.swetools.editors.sensorml.client.panels.source.FileUploadPanel;
 import com.sensia.swetools.editors.sensorml.client.panels.source.ISourcePanel;
+import com.sensia.swetools.editors.sensorml.client.panels.widgets.ISensorWidget.MODE;
 
 public class LoadProfileButtonClickListener implements ClickHandler{
 
@@ -30,6 +31,7 @@ public class LoadProfileButtonClickListener implements ClickHandler{
 			String key = profileListBox.getValue(profileListBox.getSelectedIndex());
 			
 			if(key != null && !key.isEmpty()){
+				smlEditorProcessor.setMode(MODE.EDIT);
 				smlEditorProcessor.parse(profiles.get(key));
 			}
 		} else {

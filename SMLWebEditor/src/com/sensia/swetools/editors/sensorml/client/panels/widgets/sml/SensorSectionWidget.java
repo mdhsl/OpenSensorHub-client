@@ -2,11 +2,16 @@ package com.sensia.swetools.editors.sensorml.client.panels.widgets.sml;
 
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sensia.swetools.editors.sensorml.client.panels.widgets.AbstractSensorElementWidget;
@@ -19,10 +24,12 @@ public class SensorSectionWidget extends AbstractSensorElementWidget{
 	private VerticalPanel contentPanel;
 	private Panel container;
 	
-	private ISensorWidget nameWidget;
-	private ISensorWidget labelWidget;
-	
 	private HasText currentHeader;
+	
+	//for href section Link to Base
+	private String linkName="";
+	private String href="";
+	private Anchor anchor;
 	
 	public SensorSectionWidget(String name) {
 		super(name,TAG_DEF.SML ,TAG_TYPE.ELEMENT);
@@ -64,7 +71,6 @@ public class SensorSectionWidget extends AbstractSensorElementWidget{
 			
 			//TODO:May be handled by a separator ISensorWidget?
 			if(widget.getType() == TAG_TYPE.ATTRIBUTE && widget.getName().equals("name")) {
-				nameWidget = widget;
 				valueHeader += " ("+toNiceLabel(widget.getValue(widget.getName()))+")";
 				currentHeader.setText(valueHeader);
 			} else if(widget.getName().equals("CharacteristicList") || widget.getName().equals("CapabilityList")) {
@@ -85,7 +91,6 @@ public class SensorSectionWidget extends AbstractSensorElementWidget{
 					} else if(child.getType() == TAG_TYPE.ELEMENT && child.getName().equals("label")) {
 						valueHeader += " ("+toNiceLabel(child.getValue(child.getName()))+")";
 						currentHeader.setText(valueHeader);
-						labelWidget = child;
 						child.getPanel().removeFromParent();
 						break;
 					}
@@ -98,6 +103,27 @@ public class SensorSectionWidget extends AbstractSensorElementWidget{
 				panel.addStyleName("swe-generic-vertical-panel");
 				contentPanel.add(panel);
 			}
+		} else if(getName().equals("Link to Base")) {
+			if(widget.getType() == TAG_TYPE.ATTRIBUTE) {
+				if(widget.getName().equals("title")) {
+					linkName = widget.getValue("title");
+				} else if(widget.getName().equals("href")) {
+					href = widget.getValue("href");
+				}
+			}
+			if(getElements().isEmpty()) {
+				anchor = new Anchor("","");
+				VerticalPanel vPanel = new VerticalPanel();
+				vPanel.add(anchor);
+				vPanel.addStyleName("swe-generic-vertical-panel");
+				contentPanel.add(vPanel);
+			} else {
+				//generate client link url
+				String url = Window.Location.getHref()+"?url="+href;
+				anchor.setHref(url);
+				anchor.setText(linkName);
+			}
+			
 		} else if(widget.getType() == TAG_TYPE.ATTRIBUTE) {
 			//get header from child value
 			if(!widget.getElements().isEmpty()) {

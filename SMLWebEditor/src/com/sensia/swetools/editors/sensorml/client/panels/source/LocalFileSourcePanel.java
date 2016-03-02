@@ -4,6 +4,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.sensia.swetools.editors.sensorml.client.RNGProcessorSML;
+import com.sensia.swetools.editors.sensorml.client.panels.widgets.ISensorWidget.MODE;
 
 public class LocalFileSourcePanel extends AbstractSourcePanel{
 
@@ -19,6 +20,7 @@ public class LocalFileSourcePanel extends AbstractSourcePanel{
 		final String fileContent = fileUploadPanel.getContents();
 		if(fileContent != null && !fileContent.trim().isEmpty()){
 			try {
+				smlEditorProcessor.setMode(MODE.VIEW);
 				smlEditorProcessor.parse(fileUploadPanel.getFileName(), fileContent);
 			} catch (Exception e) {
 				Window.alert("An error occured while parsing the file. Check that it is a valid XML file");

@@ -10,7 +10,13 @@
 
 package com.sensia.swetools.editors.sensorml.client.panels;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +26,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -56,6 +63,7 @@ public class CenterPanel extends Composite implements IParsingObserver{
 	private static Map<String,String> profiles = new HashMap<String,String>();
 	
 	static {
+		profiles.put("Gamma2070","rng1.0/profiles/CSM/gamma2070.rng");
 		profiles.put("Anemometer","rng1.0/profiles/CSM/anemometer.rng");
 		profiles.put("Thermometer","rng1.0/profiles/CSM/thermometer-minimal-view.rng");
 		
@@ -65,27 +73,62 @@ public class CenterPanel extends Composite implements IParsingObserver{
 		sgmlEditorProcessor.addObserver(this);
 		this.smlEditorProcessor = sgmlEditorProcessor;
 
-		Panel profilePanel = getProfilePanel();
-		Panel viewXmlPanel = getXMLViewPanel();
+		final Panel profilePanel = getProfilePanel();
+		final Panel viewXmlPanel = getXMLViewPanel();
 
+		final VerticalPanel verticalPanel = new VerticalPanel();
+		
 		//add View as XML button
 		Button viewAsXML = new Button("View as XML");
 		viewAsXML.addClickHandler(new ViewAsXMLButtonClickListener(sgmlEditorProcessor));
 		
-		HorizontalPanel panel = new HorizontalPanel();
-		panel.add(viewXmlPanel);
-		panel.add(profilePanel);
-		panel.add(viewAsXML);
+		String passedFile = com.google.gwt.user.client.Window.Location.getParameter("url");
+		
+		String testXDomain = test(passedFile);
+		GWT.log(testXDomain);
+		if(passedFile == null) {
+			HorizontalPanel panel = new HorizontalPanel();
+			panel.add(viewXmlPanel);
+			panel.add(profilePanel);
+			panel.add(viewAsXML);
+			
+			verticalPanel.add(panel);
+		} else {
+			//load the file given the url passed as parameter
+			//do not display the edit/view options
+			smlEditorProcessor.setMode(MODE.VIEW);
+			smlEditorProcessor.parse(passedFile);
+		}
 		
 		dynamicCenterPanel = new VerticalPanel();
-		
-		final VerticalPanel verticalPanel = new VerticalPanel();
-		verticalPanel.add(panel);
 		verticalPanel.add(dynamicCenterPanel);
 		initWidget(verticalPanel);
 		
 	}
 
+	private String test(String urlF) {
+		String message = "";
+
+
+		try {
+		    URL url = new URL(urlF);
+		    URLConnection urlConn = url.openConnection();
+		    urlConn.setReadTimeout(100000);
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+		    String line;
+
+		    while ((line = reader.readLine()) != null) {
+		        message = message.concat(line);
+		    }
+		    reader.close();
+		} catch (MalformedURLException e) {
+		message = e.getMessage();
+		} catch (IOException e) {
+		message = e.getMessage();
+		}
+		
+		return message;
+	}
 	private Panel getXMLViewPanel() {
 		final HorizontalPanel panel = new HorizontalPanel();
 		panel.setSpacing(20);
@@ -198,10 +241,6 @@ public class CenterPanel extends Composite implements IParsingObserver{
 		
 		load.addClickHandler(new LoadProfileButtonClickListener(profileListBox,profiles, smlEditorProcessor));
 		
-		
-		//disable panel
-		profileListBox.setEnabled(false);
-		load.setEnabled(false);
 		
 		return panel;
 	}

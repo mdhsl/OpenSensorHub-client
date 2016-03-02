@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns:sml="http://www.opengis.net/sensorML/2.0" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sch="http://www.ascc.net/xml/schematron" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+   <!-- -->
+   <sch:ns prefix="sml" uri="http://www.opengis.net/sensorml/2.0" />
+   <sch:ns prefix="gml" uri="http://www.opengis.net/gml/3.2" />
+   <sch:ns prefix="swe" uri="http://www.opengis.net/swe/2.0" />
+   <!-- -->
+   <include href="../../sml/sensorML.rng">
+      <start>
+         <ref name="wst.Gamma" />
+      </start>
+   </include>
+   <!-- -->
+   <define name="wst.Gamma">
+    <sml:PhysicalComponent>
+      
+    </sml:PhysicalComponent>
+   </define>
+</grammar>
