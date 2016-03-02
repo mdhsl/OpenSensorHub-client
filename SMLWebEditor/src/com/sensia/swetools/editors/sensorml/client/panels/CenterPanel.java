@@ -84,8 +84,6 @@ public class CenterPanel extends Composite implements IParsingObserver{
 		
 		String passedFile = com.google.gwt.user.client.Window.Location.getParameter("url");
 		
-		String testXDomain = test(passedFile);
-		GWT.log(testXDomain);
 		if(passedFile == null) {
 			HorizontalPanel panel = new HorizontalPanel();
 			panel.add(viewXmlPanel);
@@ -106,29 +104,6 @@ public class CenterPanel extends Composite implements IParsingObserver{
 		
 	}
 
-	private String test(String urlF) {
-		String message = "";
-
-
-		try {
-		    URL url = new URL(urlF);
-		    URLConnection urlConn = url.openConnection();
-		    urlConn.setReadTimeout(100000);
-		    BufferedReader reader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
-		    String line;
-
-		    while ((line = reader.readLine()) != null) {
-		        message = message.concat(line);
-		    }
-		    reader.close();
-		} catch (MalformedURLException e) {
-		message = e.getMessage();
-		} catch (IOException e) {
-		message = e.getMessage();
-		}
-		
-		return message;
-	}
 	private Panel getXMLViewPanel() {
 		final HorizontalPanel panel = new HorizontalPanel();
 		panel.setSpacing(20);
